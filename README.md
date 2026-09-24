@@ -23,7 +23,7 @@ It uses only the standard library plus `requests` (for the NVD API). It doesn't 
 Requires **Python 3.10+**.
 
 ```bash
-git clone <your-repo-url> portrecon
+git clone https://github.com/KrishivSharma45/portrecon.git
 cd portrecon
 pip install -r requirements.txt
 ```
@@ -163,7 +163,7 @@ This tool is provided for educational and authorized security-testing purposes. 
 
 **Krishiv Sharma**
 
-- 🐙 GitHub: [@your-username](https://github.com/your-username)
+- 🐙 GitHub: [@KrishivSharma45](https://github.com/KrishivSharma45)
 - 💼 LinkedIn: [linkedin.com/in/your-profile](https://www.linkedin.com/in/your-profile)
 
 If you found this project useful, consider giving it a ⭐ on GitHub!
