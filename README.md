@@ -164,6 +164,6 @@ This tool is provided for educational and authorized security-testing purposes. 
 **Krishiv Sharma**
 
 - 🐙 GitHub: [@KrishivSharma45](https://github.com/KrishivSharma45)
-- 💼 LinkedIn: [linkedin.com/in/your-profile](https://www.linkedin.com/in/your-profile)
+- 💼 LinkedIn: [Krishiv Sharma](https://www.linkedin.com/in/krishiv-sharma-043335381)
 
 If you found this project useful, consider giving it a ⭐ on GitHub!
