@@ -1,12 +1,12 @@
-# PortRecon
+# 🛡️ PortRecon
 
 A network vulnerability scanner written in Python. PortRecon finds open TCP ports on a target, fingerprints the services on them from their banners, and checks the NIST National Vulnerability Database (NVD) for known CVEs. It writes the results to an HTML report color-coded by severity and to a JSON file.
 
-> **⚠️ Legal and ethical use only.** See the [disclaimer](#legal--ethical-disclaimer) before you use this tool.
+> **⚠️ Legal and ethical use only.** Read the **Legal & ethical disclaimer** at the end before you use this tool.
 
 ---
 
-## Features
+## ✨ Features
 
 | Stage | What it does |
 |---|---|
@@ -18,7 +18,7 @@ A network vulnerability scanner written in Python. PortRecon finds open TCP port
 
 It uses only the standard library plus `requests` (for the NVD API). It doesn't depend on nmap or any other external scanning library.
 
-## Installation
+## 📦 Installation
 
 Requires **Python 3.10+**.
 
@@ -35,7 +35,7 @@ export NVD_API_KEY="your-key"        # Linux / macOS
 setx NVD_API_KEY "your-key"          # Windows (restart the terminal afterwards)
 ```
 
-## Usage
+## 🚀 Usage
 
 ```bash
 python main.py --target <IP or hostname> --ports <range> [--threads N] [--output NAME]
@@ -52,7 +52,7 @@ python main.py --target <IP or hostname> --ports <range> [--threads N] [--output
 | `--no-cve` | off | Skip the NVD lookup and only scan and fingerprint |
 | `-v`, `--verbose` | off | Debug logging |
 
-### Examples
+### 💡 Examples
 
 ```bash
 # Scan the top 1000 ports of a Metasploitable VM on a host-only network
@@ -65,7 +65,7 @@ python main.py -t 10.10.10.5 -p 21,22,80,443,3306,8080 --threads 200 --timeout 0
 python main.py -t 192.168.1.50 -p 1-65535 --threads 500 --no-cve
 ```
 
-### Sample output
+### 🖥️ Sample output
 
 ```text
 [*] Target: 192.168.56.101 (192.168.56.101)  |  Ports: 1000  |  Threads: 100  |  Timeout: 1.0s
@@ -95,7 +95,7 @@ python main.py -t 192.168.1.50 -p 1-65535 --threads 500 --no-cve
 ================================================================
 ```
 
-### Running modules individually
+### 🧩 Running modules individually
 
 Each stage is a standalone module that you can run or import on its own:
 
@@ -116,7 +116,7 @@ services = grab_banners("192.168.56.101", open_ports)
 cves = CVELookup().search("OpenSSH", "7.4")
 ```
 
-## Project structure
+## 📁 Project structure
 
 ```text
 portrecon/
@@ -131,20 +131,20 @@ portrecon/
 └── README.md
 ```
 
-## How it works
+## ⚙️ How it works
 
 1. **TCP connect scan.** For each port, a worker thread calls `connect_ex()`. A completed three-way handshake means the port is open. This scan type needs no root or raw-socket privileges. The trade-off is that it's noisier than a SYN scan, because the target logs full connections.
 2. **Banner grabbing.** PortRecon reconnects to each open port and waits briefly for the service to speak first. If it stays silent, PortRecon sends an HTTP `HEAD` probe, over TLS on HTTPS ports. The response is matched against an ordered list of regex signatures.
 3. **CVE lookup.** The product and version are sent to the NVD as a keyword search. Results are ranked by CVSS score. PortRecon uses the newest CVSS version available (v4.0 → v3.1 → v3.0 → v2.0) and prefers NVD's own "Primary" score. Services without a detected version are skipped, because searching a bare product name returns thousands of irrelevant CVEs.
 4. **Reporting.** Findings are combined into one structured dict. It is written out as JSON and rendered as HTML.
 
-## Limitations
+## ⚠️ Limitations
 
 - **Keyword matching is heuristic.** It can report false positives, such as CVEs that mention a version only as the fix version ("before 7.4"). It can also miss CVEs that are described in different words. It also doesn't know about vendor backports: Ubuntu's `OpenSSH 7.4` may already be patched. Treat the results as leads to verify, not confirmed vulnerabilities.
 - IPv4 and TCP only. There is no UDP scanning.
 - Services that give no banner and don't answer HTTP are reported as `unknown`.
 
-## Legal & ethical disclaimer
+## ⚖️ Legal & ethical disclaimer
 
 **Only scan systems you own or have explicit, written permission to test.**
 
@@ -158,3 +158,12 @@ Good legal targets for practice:
 - `scanme.nmap.org`, which the Nmap project explicitly permits for light scanning
 
 This tool is provided for educational and authorized security-testing purposes. The author accepts no liability for misuse or damage. **You are responsible for your actions.**
+
+## 👨‍💻 Author
+
+**Krishiv Sharma**
+
+- 🐙 GitHub: [@your-username](https://github.com/your-username)
+- 💼 LinkedIn: [linkedin.com/in/your-profile](https://www.linkedin.com/in/your-profile)
+
+If you found this project useful, consider giving it a ⭐ on GitHub!
