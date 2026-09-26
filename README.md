@@ -116,6 +116,15 @@ services = grab_banners("192.168.56.101", open_ports)
 cves = CVELookup().search("OpenSSH", "7.4")
 ```
 
+## 🧪 Running tests
+
+The test suite covers every module. It uses local sockets and a stubbed NVD API, so it needs no network access and never scans anything external.
+
+```bash
+pip install -r requirements-dev.txt
+pytest
+```
+
 ## 📁 Project structure
 
 ```text
@@ -126,8 +135,12 @@ portrecon/
 │   ├── banner_grabber.py    # Banner retrieval, protocol probes, service fingerprinting
 │   ├── cve_lookup.py        # NVD API client with rate limiting and caching
 │   └── report_generator.py  # HTML and JSON report output
+├── tests/                   # pytest suite (no network required)
 ├── main.py                  # CLI entry point and pipeline orchestration
 ├── requirements.txt
+├── requirements-dev.txt     # requirements.txt + pytest
+├── pytest.ini
+├── LICENSE
 └── README.md
 ```
 
