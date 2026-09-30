@@ -2,6 +2,7 @@
 
 [![tests](https://github.com/KrishivSharma45/portrecon/actions/workflows/tests.yml/badge.svg)](https://github.com/KrishivSharma45/portrecon/actions/workflows/tests.yml)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+[![Ruff](https://img.shields.io/badge/lint-ruff-D7FF64)](https://docs.astral.sh/ruff/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 A network vulnerability scanner written in Python. PortRecon finds open TCP ports on a target, fingerprints the services on them from their banners, and checks the NIST National Vulnerability Database (NVD) for known CVEs. It writes the results to an HTML report color-coded by severity and to a JSON file.
@@ -129,7 +130,8 @@ The test suite covers every module. It uses local sockets and a stubbed NVD API,
 
 ```bash
 pip install -r requirements-dev.txt
-pytest
+pytest          # run the tests
+ruff check .    # lint
 ```
 
 ## 📁 Project structure

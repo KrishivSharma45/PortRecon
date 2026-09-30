@@ -16,8 +16,8 @@ from __future__ import annotations
 import socket
 import sys
 import threading
+from collections.abc import Callable, Iterable
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import Callable, Iterable
 
 DEFAULT_TIMEOUT: float = 1.0
 DEFAULT_THREADS: int = 100

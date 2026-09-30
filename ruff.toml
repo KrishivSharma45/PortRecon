@@ -1,0 +1,6 @@
+line-length = 120
+target-version = "py310"
+
+[lint]
+# pycodestyle, pyflakes, import sorting, bugbear, pyupgrade, simplify
+select = ["E", "W", "F", "I", "B", "UP", "SIM"]

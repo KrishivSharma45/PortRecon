@@ -141,7 +141,8 @@ pre { margin: 0; white-space: pre-wrap; word-break: break-all; background: var(-
 .vuln-head .score { color: var(--muted); font-size: 13px; }
 .vuln p { margin: 6px 0 0; }
 .empty { color: var(--muted); font-style: italic; }
-footer { margin-top: 40px; font-size: 13px; color: var(--muted); border-top: 1px solid var(--border); padding-top: 16px; }
+footer { margin-top: 40px; font-size: 13px; color: var(--muted);
+  border-top: 1px solid var(--border); padding-top: 16px; }
 """
 
 
@@ -184,7 +185,10 @@ def _render_vulnerabilities(services: list[dict[str, Any]]) -> str:
             continue
         items = []
         for v in svc["vulnerabilities"]:
-            score = f"CVSS {v['cvss_version']}: {v['cvss_score']:.1f}" if v["cvss_score"] is not None else "No CVSS score"
+            if v["cvss_score"] is not None:
+                score = f"CVSS {v['cvss_version']}: {v['cvss_score']:.1f}"
+            else:
+                score = "No CVSS score"
             items.append(
                 f'<div class="vuln {_sev_class(v["severity"])}"><div class="vuln-head">'
                 f'<span class="badge">{escape(v["severity"])}</span>'

@@ -38,7 +38,10 @@ def test_parse_args_rejects_invalid(argv):
         parse_args(argv)
 
 
-@pytest.mark.parametrize(("answer", "allowed"), [("yes", True), (" YES ", True), ("y", False), ("no", False), ("", False)])
+@pytest.mark.parametrize(
+    ("answer", "allowed"),
+    [("yes", True), (" YES ", True), ("y", False), ("no", False), ("", False)],
+)
 def test_confirm_authorisation_requires_yes(monkeypatch, answer, allowed):
     monkeypatch.setattr("builtins.input", lambda _prompt: answer)
     assert confirm_authorisation("127.0.0.1") is allowed

@@ -146,7 +146,7 @@ def _recv(sock: socket.socket) -> bytes:
     """Receive up to RECV_BYTES, returning b'' on timeout or error."""
     try:
         return sock.recv(RECV_BYTES)
-    except (socket.timeout, OSError):
+    except OSError:
         return b""
 
 
@@ -168,10 +168,12 @@ def grab_banner(ip: str, port: int, timeout: float = DEFAULT_TIMEOUT) -> bytes:
             ctx = ssl.create_default_context()
             ctx.check_hostname = False
             ctx.verify_mode = ssl.CERT_NONE
-            with socket.create_connection((ip, port), timeout=timeout) as raw_sock:
-                with ctx.wrap_socket(raw_sock, server_hostname=ip) as sock:
-                    sock.sendall(_http_probe(ip))
-                    return _recv(sock)
+            with (
+                socket.create_connection((ip, port), timeout=timeout) as raw_sock,
+                ctx.wrap_socket(raw_sock, server_hostname=ip) as sock,
+            ):
+                sock.sendall(_http_probe(ip))
+                return _recv(sock)
 
         with socket.create_connection((ip, port), timeout=timeout) as sock:
             if port in HTTP_PORTS:
