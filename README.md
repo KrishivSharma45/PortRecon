@@ -76,7 +76,7 @@ python main.py -t 192.168.1.50 -p 1-65535 --threads 500 --no-cve
 
 ```text
 [*] Target: 192.168.56.101 (192.168.56.101)  |  Ports: 1000  |  Threads: 100  |  Timeout: 1.0s
-[*] Scanning... 1000/1000 ports checked (100.0%)
+[*] Scanning... 1000/1000 ports checked (100.0%)  287 ports/s  done in 3s
 [+] Open ports: 21, 22, 80
 [*] Grabbing service banners...
 [+] 21/tcp  ftp          vsftpd 2.3.4

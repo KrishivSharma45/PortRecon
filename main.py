@@ -80,19 +80,38 @@ def warn(msg: str) -> None:
     print(f"{Color.wrap('[!]', '93')} {msg}")
 
 
+def format_duration(seconds: float) -> str:
+    """Format seconds as ``42s`` or ``3m05s``."""
+    seconds = max(0, round(seconds))
+    minutes, secs = divmod(seconds, 60)
+    return f"{minutes}m{secs:02d}s" if minutes else f"{secs}s"
+
+
 def make_progress_printer(total: int) -> ProgressCallback:
     """Return a progress callback that redraws a single terminal line.
 
+    Shows ports checked, percentage, scan rate and estimated time remaining.
     Output is throttled to ~200 redraws per scan so large port ranges don't
     spend more time printing than scanning.
     """
     step = max(1, total // 200)
+    start = time.perf_counter()
 
     def _progress(checked: int, total_: int) -> None:
         if checked % step and checked != total_:
             return
+        elapsed = time.perf_counter() - start
+        rate = checked / elapsed if elapsed > 0 else 0.0
         pct = checked / total_ * 100
-        sys.stdout.write(f"\r{Color.wrap('[*]', '96')} Scanning... {checked}/{total_} ports checked ({pct:5.1f}%)")
+        if checked == total_:
+            timing = f"done in {format_duration(elapsed)}"
+        else:
+            timing = f"ETA {format_duration((total_ - checked) / rate)}" if rate else "ETA --"
+        # Trailing spaces clear leftovers when the line gets shorter.
+        sys.stdout.write(
+            f"\r{Color.wrap('[*]', '96')} Scanning... {checked}/{total_} ports checked "
+            f"({pct:5.1f}%)  {rate:,.0f} ports/s  {timing}   "
+        )
         sys.stdout.flush()
         if checked == total_:
             sys.stdout.write("\n")
