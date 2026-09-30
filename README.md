@@ -9,6 +9,12 @@ A network vulnerability scanner written in Python. PortRecon finds open TCP port
 
 > **⚠️ Legal and ethical use only.** Read the **Legal & ethical disclaimer** at the end before you use this tool.
 
+## 📸 Sample report
+
+![PortRecon HTML report showing open ports, service versions and color-coded CVEs](docs/report-screenshot.png)
+
+*A real scan of intentionally vulnerable test services on localhost. The report follows the viewer's light or dark theme.*
+
 ---
 
 ## ✨ Features
