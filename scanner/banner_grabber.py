@@ -119,9 +119,9 @@ class ServiceInfo:
 
 
 def _clean(raw: bytes) -> str:
-    """Decode raw bytes and strip non-printable characters (keeps newlines)."""
-    text = raw.decode("utf-8", errors="replace")
-    return "".join(ch for ch in text if ch.isprintable() or ch in "\r\n\t").strip()
+    """Decode raw bytes, normalise line endings and strip non-printable characters."""
+    text = raw.decode("utf-8", errors="replace").replace("\r\n", "\n").replace("\r", "\n")
+    return "".join(ch for ch in text if ch.isprintable() or ch in "\n\t").strip()
 
 
 def _parse_mysql_greeting(raw: bytes) -> str | None:

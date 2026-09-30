@@ -65,6 +65,12 @@ def test_banner_strips_non_printable_characters():
     assert info.banner == "220 hello world"
 
 
+def test_banner_normalises_line_endings():
+    info = identify_service(80, b"HTTP/1.1 200 OK\r\nServer: nginx/1.18.0\r\n\r\n")
+    assert "\r" not in info.banner
+    assert info.banner == "HTTP/1.1 200 OK\nServer: nginx/1.18.0"
+
+
 def test_display_name():
     info = identify_service(22, b"SSH-2.0-OpenSSH_8.9p1 Ubuntu\r\n")
     assert info.display_name == "OpenSSH 8.9p1"
