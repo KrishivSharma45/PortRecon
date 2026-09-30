@@ -26,16 +26,30 @@ MAX_PORT: int = 65535
 ProgressCallback = Callable[[int, int], None]
 """Signature for progress callbacks: ``callback(checked, total)``."""
 
+# The 100 TCP ports most often found open, based on nmap's port-frequency data.
+# Selected with the port spec keyword ``top100``.
+TOP_100_PORTS: tuple[int, ...] = (
+    7, 9, 13, 21, 22, 23, 25, 26, 37, 53, 79, 80, 81, 88, 106, 110, 111, 113, 119, 135,
+    139, 143, 144, 179, 199, 389, 427, 443, 444, 445, 465, 513, 514, 515, 543, 544, 548,
+    554, 587, 631, 646, 873, 990, 993, 995, 1025, 1026, 1027, 1028, 1029, 1110, 1433,
+    1720, 1723, 1755, 1900, 2000, 2001, 2049, 2121, 2717, 3000, 3128, 3306, 3389, 3986,
+    4899, 5000, 5009, 5051, 5060, 5101, 5190, 5357, 5432, 5631, 5666, 5800, 5900, 6000,
+    6001, 6646, 7070, 8000, 8008, 8009, 8080, 8081, 8443, 8888, 9100, 9999, 10000, 32768,
+    49152, 49153, 49154, 49155, 49156, 49157,
+)
+
 
 def parse_port_range(spec: str) -> list[int]:
     """
     Parse a port specification into a sorted list of unique ports.
 
-    Supports single ports, ranges and comma-separated combinations::
+    Supports single ports, ranges, the ``top100`` keyword and comma-separated
+    combinations of these::
 
         "80"            -> [80]
         "1-1000"        -> [1, 2, ..., 1000]
         "22,80,443"     -> [22, 80, 443]
+        "top100"        -> the 100 most commonly open ports
         "1-100,443,8080-8090"
 
     Args:
@@ -52,7 +66,9 @@ def parse_port_range(spec: str) -> list[int]:
         part = part.strip()
         if not part:
             continue
-        if "-" in part:
+        if part.lower() == "top100":
+            ports.update(TOP_100_PORTS)
+        elif "-" in part:
             start_str, _, end_str = part.partition("-")
             try:
                 start, end = int(start_str), int(end_str)

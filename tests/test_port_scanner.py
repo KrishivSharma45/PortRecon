@@ -4,7 +4,7 @@ import socket
 
 import pytest
 
-from scanner.port_scanner import parse_port_range, resolve_target, scan_port, scan_ports
+from scanner.port_scanner import TOP_100_PORTS, parse_port_range, resolve_target, scan_port, scan_ports
 
 
 @pytest.fixture
@@ -36,6 +36,23 @@ def closed_port():
 )
 def test_parse_port_range_valid(spec, expected):
     assert parse_port_range(spec) == expected
+
+
+def test_top_100_ports_are_unique_and_valid():
+    assert len(TOP_100_PORTS) == 100
+    assert len(set(TOP_100_PORTS)) == 100
+    assert all(1 <= p <= 65535 for p in TOP_100_PORTS)
+
+
+@pytest.mark.parametrize("spec", ["top100", "TOP100", " top100 "])
+def test_parse_port_range_top100(spec):
+    assert parse_port_range(spec) == sorted(TOP_100_PORTS)
+
+
+def test_parse_port_range_top100_combined():
+    ports = parse_port_range("top100,31337")
+    assert len(ports) == 101
+    assert 31337 in ports and 22 in ports
 
 
 def test_parse_port_range_full_range():

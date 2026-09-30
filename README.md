@@ -14,7 +14,7 @@ A network vulnerability scanner written in Python. PortRecon finds open TCP port
 
 | Stage | What it does |
 |---|---|
-| **Port scanning** | Multi-threaded TCP connect scan (`socket` + `ThreadPoolExecutor`). The timeout and thread count can both be set. It accepts ranges and lists (`1-1000`, `22,80,443`, `1-100,8080`). |
+| **Port scanning** | Multi-threaded TCP connect scan (`socket` + `ThreadPoolExecutor`). The timeout and thread count can both be set. It accepts ranges, lists and a `top100` shortcut (`1-1000`, `22,80,443`, `top100`). |
 | **Banner grabbing** | Reads passive banners (SSH, FTP, SMTP, MySQL handshake) and sends protocol probes when a service stays quiet (HTTP `HEAD`, over TLS for 443/8443). Regex signatures pull out the product and version, e.g. `OpenSSH 7.4` or `Apache httpd 2.4.29`. |
 | **CVE lookup** | Keyword search against the [NVD CVE API 2.0](https://nvd.nist.gov/developers/vulnerabilities). It returns the CVE ID, description, CVSS score and severity. A thread-safe sliding-window rate limiter and a 24-hour on-disk cache limit the number of API calls. |
 | **Reporting** | A self-contained HTML report (light and dark mode, severity color-coding, links to NVD) and a raw JSON export, both timestamped under `reports/`. |
@@ -48,7 +48,7 @@ python main.py --target <IP or hostname> --ports <range> [--threads N] [--output
 | Option | Default | Description |
 |---|---|---|
 | `-t`, `--target` | *required* | Target IPv4 address or hostname |
-| `-p`, `--ports` | `1-1000` | Ports to scan: `1-1000`, `22,80,443`, `1-100,8080-8090` |
+| `-p`, `--ports` | `1-1000` | Ports to scan: `1-1000`, `22,80,443`, `1-100,8080-8090`, or `top100` for the 100 most common ports |
 | `--threads` | `100` | Number of concurrent scanning threads (1–1000) |
 | `--timeout` | `1.0` | Per-port connect timeout in seconds |
 | `-o`, `--output` | `portrecon_<ip>` | Base name for the report files (a timestamp is appended) |
@@ -61,6 +61,9 @@ python main.py --target <IP or hostname> --ports <range> [--threads N] [--output
 ```bash
 # Scan the top 1000 ports of a Metasploitable VM on a host-only network
 python main.py --target 192.168.56.101 --ports 1-1000 --output metasploitable
+
+# Quick scan of the 100 most common ports
+python main.py -t 192.168.56.101 -p top100
 
 # Scan a few specific ports with more threads and a shorter timeout
 python main.py -t 10.10.10.5 -p 21,22,80,443,3306,8080 --threads 200 --timeout 0.5

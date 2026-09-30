@@ -109,7 +109,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument("--target", "-t", required=True, help="Target IPv4 address or hostname")
     parser.add_argument("--ports", "-p", default="1-1000",
-                        help="Ports to scan, e.g. 1-1000, 22,80,443 or 1-100,8080 (default: 1-1000)")
+                        help="Ports to scan, e.g. 1-1000, 22,80,443, top100 or 1-100,8080 (default: 1-1000)")
     parser.add_argument("--threads", type=int, default=DEFAULT_THREADS,
                         help=f"Concurrent scanning threads (default: {DEFAULT_THREADS})")
     parser.add_argument("--timeout", type=float, default=DEFAULT_TIMEOUT,
